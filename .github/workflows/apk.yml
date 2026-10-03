@@ -31,7 +31,8 @@ jobs:
           rm -rf mipmap-anydpi-v26
           for d in mipmap-*; do cp ../../../../../../icon-192.png $d/ic_launcher.png; cp ../../../../../../icon-192.png $d/ic_launcher_round.png; rm -f $d/ic_launcher_foreground.png; done
       - name: Build
-        run: cd app/android && chmod +x gradlew && ./gradlew assembleDebug --no-daemon
+        # fixed signing key so a new APK installs over the old one and keeps the saved progress
+        run: mkdir -p ~/.android && cp .github/debug.keystore ~/.android/debug.keystore && cd app/android && chmod +x gradlew && ./gradlew assembleDebug --no-daemon
       - name: Release
         env: { GH_TOKEN: '${{ github.token }}' }
         run: |
